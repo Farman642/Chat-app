@@ -21,6 +21,7 @@ const registerUser =asyncHandler(async(req,res)=>{
         email,
         password,
         pic,
+        
     })
 
     await user.save();

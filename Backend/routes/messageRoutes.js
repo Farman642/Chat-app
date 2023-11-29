@@ -1,10 +1,13 @@
-const express = require('express');
-const { registerUser, authUser,allUsers } = require('../controller/userController');
-const { protect } = require('../middleware/authmiddleware');
+const express = require("express");
+const {
+  allMessages,
+  sendMessage,
+} = require("../controller/messageControllers");
+const { protect } = require("../middleware/authmiddleware");
 
-const router = express.Router(); // Use 'express.Router()' as a constructor
+const router = express.Router();
 
-router.route('/').post(registerUser).get(protect,allUsers);
-router.route('/login').post(authUser);
+router.route("/:chatId").get(protect, allMessages);
+router.route("/").post(protect, sendMessage);
 
 module.exports = router;

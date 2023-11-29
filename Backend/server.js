@@ -4,7 +4,8 @@ require('dotenv').config();
 const connectionDB = require('../Backend/config/db');
 const userRoutes = require('../Backend/routes/userRoutes');
 const chatRoutes =require ('../Backend/routes/chatRoutes');
-// const messageRoutes = require('../Backend/routes/messageRoutes')
+const messageRoutes = require('../Backend/routes/messageRoutes')
+// const schedulingRoutes = require('../Backend/routes/schedulingRoutes')
 
 const app = express();
 
@@ -14,7 +15,8 @@ connectionDB()
 app.use(express.json())
 app.use('/api/user',userRoutes);
 app.use("/api/chat", chatRoutes);
-// app.use("/api/message", messageRoutes);
+app.use("/api/message", messageRoutes);
+//app.use("/api/scheduling", schedulingRoutes);
 
 app.get('/',(req,res)=>{
     res.send("Hello form Backend")
@@ -24,12 +26,12 @@ app.get('/api/chat',(req,res)=>{
     res.send(chats)
 });
 
-app.get('/api/chat/:id',(req,res)=>{
-    // console.log(req.params.id)
-    const singleChat = chats.find((c)=> c._id === req.params.id)
-    res.send(singleChat)
+// app.get('/api/chat/:id',(req,res)=>{
+//     // console.log(req.params.id)
+//     const singleChat = chats.find((c)=> c._id === req.params.id)
+//     res.send(singleChat)
 
-})
+// })
 
 app.listen(port ,()=>{
     console.log(`Server is live on ${port}`)

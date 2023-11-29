@@ -9,7 +9,8 @@ const connectionDB = async()=>{
             useNewUrlParser :true ,
             useUnifiedTopology :true
         }
-            );console.log(`database is connected ${connt.connection.host}`);
+            );
+            console.log(`database is connected ${connt.connection.host}`);
     } catch (error) {
         console.log(`error ${error.message}`);
         process.exit()
