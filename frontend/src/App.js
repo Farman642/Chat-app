@@ -4,7 +4,7 @@ import Calls from "./components/calls"
 
 function App() {
   return ( <div>
-    <Calls /> 
+    <Calls />
  
   </div>
 
