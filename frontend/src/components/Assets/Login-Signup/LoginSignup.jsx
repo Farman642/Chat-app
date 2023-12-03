@@ -15,7 +15,7 @@ const LoginSignup = () => {
       <div className="header">
         <div className="text">{action}</div>
         <div className="underline"></div>
-      </div>
+      </div>  
 
       <div className="inputs">
         {action === "Login" ? (<div></div> ) : (
