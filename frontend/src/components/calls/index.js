@@ -1,27 +1,26 @@
-import React from "react";
-import Header from "../common/header";
-import Sidebar from "../common/sidebar";
-import Leftfold from "./left-fold";
-import Rightfold from "./right-fold";
-import "./call.css";
+import "./calls.css";
+import Header from "../common/header/index";
+import Siderbar from "../common/sidebar/index";
+import LeftFold from "../calls/left-fold/index";
+import RightFold from "../calls/right-fold/index";
 
-function Calls() {
+const Calls = () => {
   return (
     <div className="calls-container">
       <Header />
       <div className="calls-body">
         <div className="calls-sidebar">
-          <Sidebar />
+          <Siderbar />
         </div>
         <div className="calls-leftFold">
-          <Leftfold />
+          <LeftFold />
         </div>
         <div className="calls-rightFold">
-          <Rightfold />
-        </div>
+          <RightFold />
         </div>
       </div>
+    </div>
   );
-}
+};
 
 export default Calls;
