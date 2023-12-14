@@ -5,7 +5,10 @@ const connectionDB = require('../Backend/config/db');
 const userRoutes = require('../Backend/routes/userRoutes');
 const chatRoutes =require ('../Backend/routes/chatRoutes');
 const messageRoutes = require('../Backend/routes/messageRoutes')
-// const schedulingRoutes = require('../Backend/routes/schedulingRoutes')
+const eventRoutes = require('../Backend/routes/eventRoutes')
+const googleRoutes =require('../Backend/routes/eventRoutes')
+const redirectRoutes =require('../Backend/routes/eventRoutes')
+
 
 const app = express();
 
@@ -16,7 +19,10 @@ app.use(express.json())
 app.use('/api/user',userRoutes);
 app.use("/api/chat", chatRoutes);
 app.use("/api/message", messageRoutes);
-//app.use("/api/scheduling", schedulingRoutes);
+app.use('/google',googleRoutes)
+app.use('/google/redirect',redirectRoutes)
+
+app.use("/api/events", eventRoutes);
 
 app.get('/',(req,res)=>{
     res.send("Hello form Backend")
@@ -37,7 +43,7 @@ const server =  app.listen(port ,()=>{
     console.log(`Server is live on ${port}`)
 })
 
-
+//Configures Cross-Origin Resource Sharing (CORS)
 const io = require("socket.io")(server, {
     pingTimeout: 60000,
     cors: {
@@ -45,8 +51,9 @@ const io = require("socket.io")(server, {
       // credentials: true,
     },
   });
-  
-  io.on("connection", (socket) => {
+  //userdata from frontend
+ 
+  io.on("connection", (socket) => {  //This event is fired upon a new connection. 
     console.log("Connected to socket.io");
     socket.on("setup", (userData) => {
       socket.join(userData._id);

@@ -3,7 +3,7 @@ const Message = require("../models/messagemodel");
 const User = require("../models/usersmodel");
 const Chat = require("../models/chatmodel");
 
-
+//to get all messages
 const allMessages = asyncHandler(async (req, res) => {
   try {
     const messages = await Message.find({ chat: req.params.chatId })
