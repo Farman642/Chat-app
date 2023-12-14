@@ -1,3 +1,4 @@
+
 // import logo from './logo.svg';
 import './App.css';
 // import Calls from "./components/calls"
@@ -9,7 +10,7 @@ import Chatpage from '../src/pages/Chatpage.js'
 function App() {
   return (
   <div>
-    {/* <Calls /> */}
+    <Calls />
     <Routes>
         <Route path ='/' Component={Homepage }/>
         <Route path ='/chats' Component={ Chatpage}/>
@@ -19,6 +20,7 @@ function App() {
   </div>
 
   ); 
+
 }
 
 export default App;

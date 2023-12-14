@@ -18,6 +18,7 @@ const LoginSignup = () => {
       </div>  
 
       <div className="inputs">
+        
         {action === "Login" ? (<div></div> ) : (
           
        

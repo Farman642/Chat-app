@@ -1,11 +1,8 @@
-import React from "react";
-import "./sidebar.css";
-import { SidebarBottom } from "../../../data/sidebar";
+import { SidebarBottom, SidebarData, SidebarMore } from "../../../data/sidebar";
 import SidebarOption from "./sidebar-option";
-import { SidebarData } from "../../../data/sidebar";
-import { SidebarMore } from "../../../data/sidebar";
+import "./sidebar.css";
 
-function Sidebar() {
+const Sidebar = () => {
   const topOptions = SidebarData;
   const more = SidebarMore;
   const bottomOptions = SidebarBottom;
@@ -34,6 +31,6 @@ function Sidebar() {
       </div>
     </div>
   );
-}
+};
 
 export default Sidebar;

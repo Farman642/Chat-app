@@ -1,38 +1,24 @@
 export const SidebarData = [
-  {
-    id: 1,
-    name: "Activity",
-    icon: <i class="fi fi-bs-bowling-ball"></i>,
-  },
-  {
-    id: 2,
-    name: "Chat",
-    icon: <i class="fi fi-br-comment-alt"></i>,
-  },
-  {
-    id: 3,
-    name: "Group Chats",
-    icon: <i class="fi fi-sr-messages-question"></i>,
-  },
-  {
-    id: 4,
-    name: "Calls",
-    icon: <i class="fi fi-ss-phone-call"></i>,
-  },
-  {
-    id: 5,
-    name: "Calender",
-    icon: <i class="fi fi-rr-calendar-lines"></i>,
-  },
+  { id: 1, name: "Activity", icon: <i className="fi-rr-bell"></i> },
+  { id: 2, name: "Chat", icon: <i className="fi-rr-comment"></i> },
+  { id: 3, name: "Calender", icon: <i class="fi fi-rr-calendar"></i> },
+  { id: 4, name: "Calls", icon: <i className="fi-rr-headset"></i> },
 ];
 
 export const SidebarMore = {
   id: 1,
-  icon: <i class="fi fi-rs-circle-ellipsis"></i>,
+  icon: <i className="fi-rr-menu-dots"></i>,
 };
 
-export const SidebarBottom = {
-  id: 1,
-  name: "Help",
-  icon: <i class="fi fi-sr-interrogation"></i>,
-};
+export const SidebarBottom = [
+  {
+    id: 1,
+    name: "Apps",
+    icon: <i className="fi-rr-apps-add"></i>,
+  },
+  {
+    id: 2,
+    name: "Help",
+    icon: <i className="fi-rr-interrogation"></i>,
+  },
+];
