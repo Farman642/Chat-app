@@ -1,34 +1,23 @@
-import { SidebarBottom, SidebarData, SidebarMore } from "../../../data/sidebar";
-import SidebarOption from "./sidebar-option";
-import "./sidebar.css";
+import React from "react";
+import { Link } from "react-router-dom";
+import "./sidebar.css"; // Import the external CSS file
 
 const Sidebar = () => {
-  const topOptions = SidebarData;
-  const more = SidebarMore;
-  const bottomOptions = SidebarBottom;
+  const SidebarData = [
+    { id: 1, name: "Events", icon: <i className="fi-rr-bell"></i> },
+    { id: 2, name: "Chat", icon: <Link to="/chat"><i className="fi-rr-comment"></i></Link> },
+    { id: 3, name: "Calendar", icon: <i className="fi fi-rr-calendar"></i> },
+    { id: 4, name: "Calls", icon: <i className="fi-rr-headset"></i> },
+  ];
 
   return (
-    <div className="sidebar">
-      <div className="sidebar-top">
-        <div>
-          {topOptions.map((option) => {
-            return (
-              <SidebarOption
-                option={option}
-                isActive={option.name === "Calls" ? true : false}
-              />
-            );
-          })}
+    <div>
+      {SidebarData.map((item) => (
+        <div key={item.id} style={{ textAlign: "center", margin: "10px 0" }}>
+          {item.icon}
+          <p style={{ fontSize: "12px", margin: "5px 0" }}>{item.name}</p>
         </div>
-        <div>
-          <SidebarOption option={more} />
-        </div>
-      </div>
-      <div className="sidebar-bottom">
-        {bottomOptions.map((option) => {
-          return <SidebarOption option={option} />;
-        })}
-      </div>
+      ))}
     </div>
   );
 };
