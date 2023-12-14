@@ -6,6 +6,8 @@ import './App.css';
 import { Route,Routes} from 'react-router-dom';
 import Homepage from '../src/pages/Homepage.js'
 import Chatpage from '../src/pages/Chatpage.js'
+import ChatPage from "../src/components/Chatpage";
+import Home from "./components/calls/index";
 
 function App() {
   return (
@@ -14,6 +16,8 @@ function App() {
     <Routes>
         <Route path ='/' Component={Homepage }/>
         <Route path ='/chats' Component={ Chatpage}/>
+        <Route path="/app" element={<Home />} />
+            <Route path="/chat" element={<ChatPage />} />
       </Routes>
       
   
