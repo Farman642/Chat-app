@@ -10,7 +10,7 @@ import Chatpage from '../src/pages/Chatpage.js'
 function App() {
   return (
   <div>
-    <Calls />
+    {/* <Calls /> */}
     <Routes>
         <Route path ='/' Component={Homepage }/>
         <Route path ='/chats' Component={ Chatpage}/>
