@@ -1,22 +1,19 @@
 import React, { useState } from "react";
 import "./header.css";
-
+import { useNavigate } from "react-router-dom";
 
 const Header = () => {
   const [isDropdownOpen, setDropdownOpen] = useState(false);
-
+const navigate = useNavigate()
   const handleAvatarClick = () => {
     setDropdownOpen(!isDropdownOpen);
   };
 
-  const handleLogout = () => {
-    // Assuming you have a function to handle logout in your authentication context
-    // Replace the following line with your actual logout logic
-    console.log("Logout clicked. Add your logout logic here.");
-
-    // For demo purposes, let's simulate a logout by reloading the page
-    window.location.reload();
+  const logoutHandler = () => {
+    localStorage.removeItem("userInfo");
+    navigate("/");
   };
+  
 
   return (
     <div className="header">
@@ -45,7 +42,7 @@ const Header = () => {
           {isDropdownOpen && (
             <div className="header-dropdown">
               <ul>
-                <li onClick={handleLogout}>Logout</li>
+                <li onClick={logoutHandler}>Logout</li>
               </ul>
             </div>
           )}
