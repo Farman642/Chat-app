@@ -4,30 +4,30 @@ const moment =require('moment');
 const User =require("../models/usersmodel");
 require('dotenv').config({});
 
-const {google} = require('googleapis');
+// const {google} = require('googleapis');
 
 
-const oauth2Client = new google.auth.OAuth2(
-    process.env.CLIENT_ID,
-    process.env.CLIENT_SECRET,
-    process.env.REDIRECT_URL,
-  );
+// const oauth2Client = new google.auth.OAuth2(
+//     process.env.CLIENT_ID,
+//     process.env.CLIENT_SECRET,
+//     process.env.REDIRECT_URL,
+//   );
 
-const SCOPES = ['https://www.googleapis.com/auth/calendar'];
+// const SCOPES = ['https://www.googleapis.com/auth/calendar'];
 
-const googleLogin= asyncHandler(async(req,res)=>{
-    const url =oauth2Client.generateAuthUrl({
-        access_type:"offline",
-        scope:SCOPES
-    })
-    res.redirect(url)
+// const googleLogin= asyncHandler(async(req,res)=>{
+//     const url =oauth2Client.generateAuthUrl({
+//         access_type:"offline",
+//         scope:SCOPES
+//     })
+//     res.redirect(url)
     
-})
+// })
 
-const urlRedirect =asyncHandler(async(req,res)=>{
-    console.log(req.query);
-    res.send("its working")
-})
+// const urlRedirect =asyncHandler(async(req,res)=>{
+//     console.log(req.query);
+//     res.send("its working")
+// })
 
 
 
