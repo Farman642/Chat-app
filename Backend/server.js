@@ -185,8 +185,8 @@ const io = require("socket.io")(server, {
       });
     });
   
-    socket.off("setup", () => {
+    socket.on("disconnect", () => {
       console.log("USER DISCONNECTED");
-      socket.leave(userData._id);
+      // socket.leave(userData._id);
     });
   });
