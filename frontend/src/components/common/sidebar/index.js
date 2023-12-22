@@ -6,7 +6,7 @@ const Sidebar = () => {
   const SidebarData = [
     { id: 1, name: "Events", icon: <i className="fi-rr-bell"></i> },
     { id: 2, name: "Chat", icon: <Link to="/chat"><i className="fi-rr-comment"></i></Link> },
-    { id: 3, name: "Calendar", icon: <i className="fi fi-rr-calendar"></i> },
+    { id: 3, name: "Calendar", icon: <Link to="/calendar"><i className="fi fi-rr-calendar"></i> </Link>},
     { id: 4, name: "Calls", icon: <i className="fi-rr-headset"></i> },
   ];
 

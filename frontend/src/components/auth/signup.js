@@ -2,7 +2,7 @@ import { FormControl, FormLabel, Input, InputGroup, InputRightElement, VStack } 
 import React, { useState } from 'react';
 import { Button } from "@chakra-ui/button";
 import { useToast } from '@chakra-ui/react';
-import axios from 'axios'
+import axios from 'axios'//Axios is a simple promise based HTTP client for the browser and node.js.
 // import { useHistory } from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
 
@@ -26,7 +26,7 @@ function Signup() {
         if(pics===undefined){
             toast({
                 title: 'Please enter the Pic ',
-                status: 'waring',
+                status: 'warning',
                 duration: 9000,
                 isClosable: true,
               })
@@ -110,7 +110,7 @@ function Signup() {
         localStorage.setItem("userInfo", JSON.stringify(data));
         setLoading(false);
         // history.push("/chats");
-        navigate("/chats");
+        navigate("/app");
       } catch (error) {
         toast({
           title: "Error Occured!",

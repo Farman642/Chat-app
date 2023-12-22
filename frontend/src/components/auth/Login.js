@@ -55,8 +55,8 @@ function Login() {
       // setUser(data);
       localStorage.setItem("userInfo", JSON.stringify(data));
       setLoading(false);
-      // history.push("/chats");
-      navigate("/chats");
+     
+      navigate("/app");
     } catch (error) {
       toast({
         title: "Error Occured!",
