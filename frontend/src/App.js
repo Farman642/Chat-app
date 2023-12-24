@@ -6,20 +6,20 @@ import ChatPage from "../src/components/Chatpage/index.js";
 import Calendar from "../src/components/calenderPage/calender.js";
 import Home from "./components/calls/index";
 import AddEvent from '../src/components/calenderPage/addEvent.js'
-import GoogleCalendarConnect from '../src/components/auth/Auth.js'
-import GoogleCalendarRedirect from '../src/components/auth/redirect.js'
+// import GoogleCalendarConnect from '../src/components/auth/Auth.js'
+// import GoogleCalendarRedirect from '../src/components/auth/redirect.js'
 import ChatProvider from './Context/ChatProvider.js';
 function App() {
  
   return (
   <>
   <ChatProvider>
-  <GoogleCalendarConnect/>
+  {/* <GoogleCalendarConnect/> */}
   {/* <GoogleCalendarRedirect/> */}
     {/* <Calls /> */}
     <div><Routes>
 
-    <Route path="/google/redirect" element={<GoogleCalendarRedirect />} />
+    {/* <Route path="/google/redirect" element={<GoogleCalendarRedirect />} /> */}
         <Route path ='/' Component={Homepage }/>
         {/* <Route path ='/chats' Component={ Chatpage}/> */}
         <Route path ='/calendar' Component={Calendar }/>

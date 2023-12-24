@@ -13,7 +13,7 @@ function Calendar() {
   const handleOnClick = async () => {
     try {
       const { data } = await axios.get(
-        "http://localhost:4000/google/redirect"
+        "http://localhost:4000/google"
       );
       console.log(data);
     } catch (error) {
@@ -35,7 +35,7 @@ function Calendar() {
         }}
         height={"90vh"}
       />
-    <Link  to="/addEvent">  <Button onClick={handleOnClick}>Add Events</Button></Link>
+    <Link  to="http://localhost:4000/google">  <Button onClick={handleOnClick}>Add Events</Button></Link>
     </div>
   );
 }

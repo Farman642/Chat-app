@@ -14,6 +14,7 @@ const dayjs = require('dayjs');
 // const { uuid } = require ('uuid');
 const { default: mongoose } = require('mongoose');
 const cors = require('cors');
+const User =require('./models/usersmodel');
 
 const app = express();
 app.use(cors({
@@ -46,19 +47,21 @@ const oauth2Client = new google.auth.OAuth2(
   process.env.REDIRECT_URL,
 );
 const scopes  =[
-  'https://www.googleapis.com/auth/calendar'
+  'https://www.googleapis.com/auth/calendar',
+ ' https://www.googleapis.com/auth/userinfo.email',
+ ' profile',
 ]
 
 app.get('/google',(req,res)=>{
-  // const url = oauth2Client.generateAuthUrl({
+  const url = oauth2Client.generateAuthUrl({
     
-  //   access_type: 'offline',
-  //   scope: scopes
+    access_type: 'offline',
+    scope: scopes
 
-  // });
-  const oauthUrl = `https://accounts.google.com/o/oauth2/v2/auth?access_type=offline&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcalendar&response_type=code&client_id=${process.env.CLIENT_ID}&redirect_uri=${encodeURIComponent(process.env.REDIRECT_URL)}`;
-  res.json({ url: oauthUrl });
-  // res.redirect(url)
+  });
+  // const oauthUrl = `https://accounts.google.com/o/oauth2/v2/auth?access_type=offline&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcalendar&response_type=code&client_id=${process.env.CLIENT_ID}&redirect_uri=${encodeURIComponent(process.env.REDIRECT_URL)}`;
+  // res.json({ url: oauthUrl });
+  res.redirect(url)
 
 })
 
@@ -84,27 +87,49 @@ app.get('/google',(req,res)=>{
 
 app.get('/google/redirect', async (req, res) => {
   try {
+   
     const code = req.query.code;
     console.log('Code from query:', code);
     const { tokens } = await oauth2Client.getToken(code);
     oauth2Client.setCredentials(tokens);
+    
+    const people = google.people({ version: "v1", auth: oauth2Client });
+    const response = await people.people.get({
+      resourceName: "people/me",
+      personFields: "emailAddresses,names,photos",
+    });
+    const emailAddresses = response.data?.emailAddresses;
+   console.log(emailAddresses)
 
-    // Redirect to '/schedule_event' after successful authentication
-    const redirectUrl = '/schedule_event';
-    res.json({ success: true, redirectUrl });
+
+   const user = await User.findOneAndUpdate(
+    { email: emailAddresses[0].value },
+    { tokens: JSON.stringify(tokens) },
+    { new: true } 
+  );
+   
+  
+   
+    res.redirect('http://localhost:3000/addEvent')
   } catch (error) {
     console.error('Google Auth Redirect Error:', error);
     res.status(500).json({ success: false, error: 'Internal Server Error' });
   }
 });
 
-app.get('/schedule_event',async(req,res)=>{
+app.get('/google/schedule_event',async(req,res)=>{
+
+  const code = req.query.code;
+  console.log('Code from query:', code);
+  const { tokens } = await oauth2Client.getToken(code);
+  oauth2Client.setCredentials(tokens);
+
   await calendar.events.insert({
     calendarId:'primary',
     auth:oauth2Client,
     conferenceDataVersion:1,
     requestBody:{
-      Title:"adding event",
+      Title:"adding event -1",
       description:"adding events dis",
       start: {
          dateTime:dayjs(new Date()).add(1, 'day').toISOString(),
@@ -133,6 +158,7 @@ app.get('/schedule_event',async(req,res)=>{
   })
   
 })
+
 
 app.get('/api/chat',(req,res)=>{
     res.send(chats)

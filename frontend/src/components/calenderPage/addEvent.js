@@ -1,57 +1,3 @@
-// import { border } from "@chakra-ui/react";
-// import React, { useState } from "react";
-// import DateTimePicker from 'react-datetime-picker';
-// import 'react-datetime-picker/dist/DateTimePicker.css';
-// import axios from 'axios'
-
-
-// const AddEvent = async() => {
-//     // const [title ,setTitle] =useState();
-
-
-//     const [value, setValue] = useState(new Date());
-
-//     // const { data } = await axios.post(
-//     //     "/schedule_event",
-//     //     {
-//     //         title,
-//     //         // description,
-//     //         // start,
-//     //         // attendees,
-//     //       },
-//     //     // config
-//     //   );
-
-//     return (
-//         <div style={{ display: 'flex',
-//         justifyContent: 'center',
-//         alignItems: 'center',
-//         height:'100vh',border:'2px' ,color:'black'}}>
-//             <div>
-//                 { <label htmlFor="title" /*placeholder='Enter your name' 
-//         onChange={(e)=>{setTitle(e.target.value)}}*/>Title :</label> }
-//                 <input type="text" id="title" />
-//                 <br />
-//                 <br />
-//                 <label htmlFor="describtion">Describtion :</label>
-//                 <input type="text" id="description" />
-
-//                 <br />
-//                 <br />
-//                 <div>
-//                     <label id="dateLabel" htmlFor="datePicker">Select a Date:</label>
-//                     <DateTimePicker onChange={setValue} value={value} />
-//                 </div><br />
-//                 <br />
-
-//                 <button type="submit" style={{ border: '5px' }}>Submit</button>
-//             </div>
-//         </div>
-//     );
-// }
-
-// export default AddEvent;
-
 import { Box, Button, Input } from "@chakra-ui/react";
 import React, { useState } from "react";
 import DateTimePicker from 'react-datetime-picker';
@@ -98,8 +44,11 @@ const AddEvent = () => {
 
   const handleSubmit = async () => {
     try {
-      const { data } = await axios.post(
-        "/schedule_event",
+      
+
+
+      const { data } = await axios.get(
+        "/google/schedule_event",
         {
           title,
           description,
