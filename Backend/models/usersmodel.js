@@ -7,10 +7,10 @@ const userModel = mongoose.Schema (
         email :{type:String,required:true ,unique :true},
         password :{type:String,required:true},
         pic :{type:String,default:'https://winaero.com/blog/wp-content/uploads/2017/12/User-icon-256-blue.png'},
-        event :{
-          type :mongoose.Schema.Types.ObjectId,
-          ref:"Event"
-      },
+        event :[{
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Event"
+        }],
 
 
     },

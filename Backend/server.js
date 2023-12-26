@@ -8,6 +8,7 @@ const messageRoutes = require('../Backend/routes/messageRoutes')
 // const eventRoutes = require('../Backend/routes/eventRoutes')
 // const googleRoutes =require('../Backend/routes/eventRoutes')
 // const redirectRoutes =require('../Backend/routes/eventRoutes')
+const Event = require('./models/eventmodel');
 const {google} = require('googleapis');
 const axios = require('axios');
 const dayjs = require('dayjs');
@@ -35,11 +36,6 @@ app.use("/api/message", messageRoutes);
 // app.use('/google',googleRoutes)
 // app.use('/google/redirect',redirectRoutes)
 // app.use("/api/events", eventRoutes);
-
-app.use('/api',(req,res)=>{
-    res.send("Hello form Backend")
-})
-
 
 const oauth2Client = new google.auth.OAuth2(
   process.env.CLIENT_ID,
@@ -104,9 +100,11 @@ app.get('/google/redirect', async (req, res) => {
 
    const user = await User.findOneAndUpdate(
     { email: emailAddresses[0].value },
-    { tokens: JSON.stringify(tokens) },
+    { tokens: tokens.access_token },
+    
     { new: true } 
   );
+  console.log(user)
    
   
    
@@ -117,46 +115,97 @@ app.get('/google/redirect', async (req, res) => {
   }
 });
 
-app.get('/google/schedule_event',async(req,res)=>{
+// app.get('/google/schedule_event',async(req,res)=>{
 
-  const code = req.query.code;
-  console.log('Code from query:', code);
-  const { tokens } = await oauth2Client.getToken(code);
-  oauth2Client.setCredentials(tokens);
+//   const eventData = req.body;
 
-  await calendar.events.insert({
-    calendarId:'primary',
-    auth:oauth2Client,
-    conferenceDataVersion:1,
-    requestBody:{
-      Title:"adding event -1",
-      description:"adding events dis",
-      start: {
-         dateTime:dayjs(new Date()).add(1, 'day').toISOString(),
-        timeZone: 'Asia/Kolkata',
-      },
-      end: {
-        dateTime: dayjs(new Date()).add(1, 'day').add(1, 'hour').toISOString(),
-        timeZone: 'Asia/Kolkata',
-      },
-      conferenceData:{
-        createRequest:{
-          requestId:mongoose.Schema.ObjectId.user,
-        }
+//   const code = req.query.code;
+//   console.log('Code from query:', code);
+//   const { tokens } = await oauth2Client.getToken(code);
+//   oauth2Client.setCredentials(tokens);
 
-      },
-      attendees:[{
-        email:"farmankhan.7874@gmail.com",
+//   await calendar.events.insert({
+//     calendarId:'primary',
+//     auth:oauth2Client,
+//     conferenceDataVersion:1,
+//     requestBody:{
+//       Title:eventData.title,
+//       description:eventData.description,
+//       start:eventData.start,
+//       end: eventData.end,
+//       conferenceData:{
+//         createRequest:{
+//           requestId:mongoose.Schema.ObjectId.user,
+//         }
 
-      }]
+//       },
+//       attendees:eventData.email,
 
-    }
-  })
+//     }
+//   })
 
-  res.send({
-    msg:"done",
-  })
-  
+//   res.send({
+//     msg:"done" 
+// })
+
+app.post('/google/schedule_event', async (req, res) => {
+  try {
+
+    const eventData = req.body;
+
+    const user = await User.findOne({ email: eventData.email });
+const tokens = user.tokens;
+
+
+    // const code = req.query.code;
+    //   console.log('Code from query:', code);
+    //   const { tokens } = await oauth2Client.getToken(code);
+      // const tokens =mongoose.Schema.ObjectId.user;
+      oauth2Client.setCredentials(tokens.access_token);
+    const event =  new Event ({
+      title: eventData.title,
+      description: eventData.description,
+      start: eventData.start,
+      end: eventData.end,
+      email: eventData.email,
+    })
+ 
+    await event.save();
+
+    await calendar.events.insert({
+          calendarId:'primary',
+         auth:oauth2Client,
+         conferenceDataVersion:1,
+          requestBody:{
+            title:eventData.title,
+             description:eventData.description,
+             start:eventData.start,
+             end: eventData.end,
+             conferenceData:{
+               createRequest:{
+                 requestId:mongoose.Schema.ObjectId.user,
+               }
+      
+            },
+            attendees:eventData.email,
+      
+           }
+         })
+
+    res.send({
+      msg: "done",
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({ error: 'Internal Server Error' });
+  }
+});
+
+
+app.get('/api/calendar',async(req,res)=>{
+
+    const events = await Event.find();
+    res.send(events)
 })
 
 

@@ -40,6 +40,8 @@ const getAccessToken = async (authorizationCode) => {
 const AddEvent = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const [start, setStart] = useState("");
+  const [end, setEnd] = useState("");
   const [value, setValue] = useState(new Date());
 
   const handleSubmit = async () => {
@@ -47,12 +49,13 @@ const AddEvent = () => {
       
 
 
-      const { data } = await axios.get(
+      const { data } = await axios.post(
         "/google/schedule_event",
         {
           title,
           description,
           start: value,
+          end:value,
           // other form fields
         },
         {
