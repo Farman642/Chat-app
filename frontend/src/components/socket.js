@@ -1,5 +1,7 @@
-import { io } from 'socket.io-client';
+// socket.js
+import io from "socket.io-client";
 
-const socket = io('http://localhost:4000');
+const ENDPOINT = "http://localhost:4000"; // Your socket server endpoint
+const socket = io(ENDPOINT);
 
 export default socket;
