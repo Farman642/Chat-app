@@ -1,8 +1,3 @@
-// chatname 
-//isGroup
-//users
-//latest msg
-//group admin
 
 const mongoose = require ('mongoose')
 

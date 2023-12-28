@@ -148,7 +148,7 @@ app.get('/google/redirect', async (req, res) => {
 //     msg:"done" 
 // })
 
-app.post('/google/schedule_event', async (req, res) => {
+app.get('/google/schedule_event', async (req, res) => {
   try {
 
     const eventData = req.body;
