@@ -16,7 +16,7 @@ import socket from "./socket";
 import UpdateGroupChatModal from "./miscellaneous/UpdateGroupChatModal";
 import { ChatState } from "../Context/ChatProvider";
 // const ENDPOINT = "https://chat-app-h3qc.onrender.com/"; // "https://talk-a-tive.herokuapp.com"; -> After deployment
-var  selectedChatCompare;
+var selectedChatCompare;
 
 const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   const [messages, setMessages] = useState([]);
@@ -26,6 +26,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   const [typing, setTyping] = useState(false);
   const [istyping, setIsTyping] = useState(false);
   const toast = useToast();
+  const [arrivalMessage, setArrivalMessage] = useState(null);
 
   const defaultOptions = {
     loop: true,
@@ -56,7 +57,6 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
       );
       setMessages(data);
       setLoading(false);
-
       socket.emit("join chat", selectedChat._id);
     } catch (error) {
       toast({
@@ -85,7 +85,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
           "/api/message",
           {
             content: newMessage,
-            chatId: selectedChat,
+            chatId: selectedChat._id,
           },
           config
         );
@@ -111,14 +111,13 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
     socket.on("typing", () => setIsTyping(true));
     socket.on("stop typing", () => setIsTyping(false));
 
-    // eslint-disable-next-line
+   
   }, []);
 
   useEffect(() => {
     fetchMessages();
 
     selectedChatCompare = selectedChat;
-    // eslint-disable-next-line
   }, [selectedChat]);
 
   useEffect(() => {
@@ -132,10 +131,18 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
           setFetchAgain(!fetchAgain);
         }
       } else {
-        setMessages([...messages, newMessageRecieved]);
+        setArrivalMessage(newMessageRecieved);
       }
     });
-  });
+
+    return () => {
+      socket.off("message recieved")
+    }
+  }, [socket]);
+
+  useEffect(() => {
+    arrivalMessage && setMessages((prev) => [...prev, arrivalMessage]);
+  }, [arrivalMessage]);
 
   const typingHandler = (e) => {
     setNewMessage(e.target.value);
@@ -223,11 +230,11 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
             )}
 
             <FormControl
-             onKeyDown={sendMessage}
-             id="first-name"
-             isRequired
-             marginTop={3}
-             marginLeft="auto"
+              onKeyDown={sendMessage}
+              id="first-name"
+              isRequired
+              marginTop={3}
+              marginLeft="auto"
             >
               {istyping ? (
                 <div>
@@ -253,8 +260,15 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
         </>
       ) : (
         // to get socket.io on same page
-        <Box display="flex" alignItems="top" justifyContent="center" height="100%">
-          <Text fontSize="3xl" paddingBottom={3} fontFamily="Work sans" >
+        <Box
+          display="flex"
+          alignItems="top"
+          justifyContent="flex-end"
+          height="100%"
+          width="40%" 
+          marginRight="auto"
+        >
+          <Text display= "flex" fontSize="3xl" padding={3} fontFamily="Work sans">
             Click on a user to start chatting
           </Text>
         </Box>

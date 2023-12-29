@@ -1,16 +1,10 @@
-import { Box, Button, Input } from "@chakra-ui/react";
 import React, { useState } from "react";
+import { Box, Button, Input } from "@chakra-ui/react";
 import DateTimePicker from 'react-datetime-picker';
 import 'react-datetime-picker/dist/DateTimePicker.css';
 import axios from 'axios';
 
-
-
 const getAccessToken = async (authorizationCode) => {
-    
-
-
-  
   try {
     const response = await axios.get(
       '/google',
@@ -19,7 +13,7 @@ const getAccessToken = async (authorizationCode) => {
         code: authorizationCode,
         client_id: '219753711726-o5su7s0vkioqmmccs9i2k3297qbhc6ba.apps.googleusercontent.com',
         client_secret: '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',
-        redirect_uri:' http://localhost:4000/google/redirect',
+        redirect_uri: 'http://localhost:4000/google/redirect',
       },
       {
         headers: {
@@ -36,39 +30,42 @@ const getAccessToken = async (authorizationCode) => {
   }
 };
 
-
-const AddEvent = () => {
+const AddEvent = ({ onFormSubmit }) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [start, setStart] = useState("");
-  const [end, setEnd] = useState("");
   const [value, setValue] = useState(new Date());
 
   const handleSubmit = async () => {
     try {
-      
-
-
-      const { data } = await axios.post(
+      // Make the axios request and capture the response
+      const response = await axios.get(
         "/google/schedule_event",
         {
           title,
           description,
           start: value,
-          end:value,
           // other form fields
         },
         {
-            headers: {
-              Authorization: `Bearer ${getAccessToken}`,
-            },
-          }
+          headers: {
+            Authorization: `Bearer ${getAccessToken}`,
+          },
+        }
       );
-      // Handle response or update state accordingly
-      console.log(data);
+
+      // Invoke the callback function with the submitted data
+      onFormSubmit({
+        title,
+        description,
+        start: value,
+        // other form fields
+      });
+
+      // Log the response data from the axios request
+      console.log(response.data);
     } catch (error) {
       console.error("Error submitting form:", error);
-    } 
+    }
   };
 
   return (
@@ -118,5 +115,3 @@ const AddEvent = () => {
 };
 
 export default AddEvent;
-
-
