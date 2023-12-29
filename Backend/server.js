@@ -16,6 +16,7 @@ const dayjs = require('dayjs');
 const { default: mongoose } = require('mongoose');
 const cors = require('cors');
 const User =require('./models/usersmodel');
+const path = require('path');
 
 const app = express();
 app.use(cors({
@@ -37,6 +38,24 @@ app.use("/api/message", messageRoutes);
 // app.use('/google/redirect',redirectRoutes)
 // app.use("/api/events", eventRoutes);
 
+// --------------------------deployment------------------------------
+
+const __dirname1 = path.resolve();
+
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname1, "/frontend/build")));
+
+  app.get("*", (req, res) =>
+    res.sendFile(path.resolve(__dirname1, "frontend", "build", "index.html"))
+  );
+} else {
+  app.get("/", (req, res) => {
+    res.send("API is running..");
+  });
+}
+
+// --------------------------deployment------------------------------
+
 const oauth2Client = new google.auth.OAuth2(
   process.env.CLIENT_ID,
   process.env.CLIENT_SECRET,
@@ -55,30 +74,9 @@ app.get('/google',(req,res)=>{
     scope: scopes
 
   });
-  // const oauthUrl = `https://accounts.google.com/o/oauth2/v2/auth?access_type=offline&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcalendar&response_type=code&client_id=${process.env.CLIENT_ID}&redirect_uri=${encodeURIComponent(process.env.REDIRECT_URL)}`;
-  // res.json({ url: oauthUrl });
   res.redirect(url)
 
 })
-
-// app.get('/google/redirect',async(req,res)=>{
-  
-//   try {
-//     const code = req.query.code;
-//   console.log('Code from query:', code);
-//     const { tokens } = await oauth2Client.getToken(code);
-//     oauth2Client.setCredentials(tokens);
-
-//     // Send a response back to the React app indicating successful authentication
-    
-//     const redirectUrl = await '/schedule_event';
-//   res.json({ url: generatedAuthUrl, redirectUrl });
-//   // res.json("Its working")
-//   } catch (error) {
-//     console.error('Google Auth Redirect Error:', error);
-//     res.status(500).json({ success: false, error: 'Internal Server Error' });
-//   }
-// })
 
 
 app.get('/google/redirect', async (req, res) => {
@@ -105,7 +103,7 @@ app.get('/google/redirect', async (req, res) => {
     { new: true } 
   );
   console.log(user)
-   
+  
   
    
     res.redirect('http://localhost:3000/addEvent')
@@ -154,13 +152,7 @@ app.get('/google/schedule_event', async (req, res) => {
     const eventData = req.body;
 
     const user = await User.findOne({ email: eventData.email });
-const tokens = user.tokens;
-
-
-    // const code = req.query.code;
-    //   console.log('Code from query:', code);
-    //   const { tokens } = await oauth2Client.getToken(code);
-      // const tokens =mongoose.Schema.ObjectId.user;
+     const tokens = user.tokens;
       oauth2Client.setCredentials(tokens.access_token);
     const event =  new Event ({
       title: eventData.title,
@@ -254,9 +246,8 @@ const io = require("socket.io")(server, {
       if (!chat.users) return console.log("chat.users not defined");
   
       chat.users.forEach((user) => {
-        if (user._id == newMessageRecieved.sender._id) return;
-  
-        socket.in(user._id).emit("message recieved", newMessageRecieved);
+        if (user == newMessageRecieved.sender._id) return;
+        socket.in(user).emit("message recieved", newMessageRecieved);
       });
     });
   
